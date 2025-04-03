@@ -13,8 +13,8 @@ func main() {
 	a := A{
 		ZeroPID: primitive.NilObjectID,
 		ZeroC: C{
-			EmptyB: 0,
-			ZeroB:  0,
+			EmptyB: 1,
+			ZeroB:  1,
 		},
 	}
 	content, err := json.Marshal(a)
@@ -42,7 +42,17 @@ type A struct {
 
 type B struct{}
 
+// never zero value
+func (B) IsZero() bool {
+	return false
+}
+
 type C struct {
 	EmptyB int `json:",omitempty"`
 	ZeroB  int `json:",omitzero"`
+}
+
+// always zero value
+func (C) IsZero() bool {
+	return true
 }
